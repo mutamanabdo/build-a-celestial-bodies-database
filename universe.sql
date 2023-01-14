@@ -49,7 +49,8 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.galaxy (
     galaxy_id integer NOT NULL,
-    name character varying(30) NOT NULL
+    name character varying(30) NOT NULL,
+    glactic_dimater numeric NOT NULL
 );
 
 
@@ -132,7 +133,12 @@ CREATE TABLE public.planet (
     planet_id integer NOT NULL,
     name character varying(30) NOT NULL,
     star_id integer,
-    is_spherical boolean NOT NULL
+    is_spherical boolean NOT NULL,
+    age_in_millions_years integer NOT NULL,
+    deistance_from_earth integer NOT NULL,
+    description text NOT NULL,
+    is_hot boolean NOT NULL,
+    is_cold boolean NOT NULL
 );
 
 
@@ -167,7 +173,8 @@ ALTER SEQUENCE public.planet_planet_id_seq OWNED BY public.planet.planet_id;
 CREATE TABLE public.star (
     star_id integer NOT NULL,
     name character varying(30) NOT NULL,
-    galaxy_id integer
+    galaxy_id integer,
+    distance_in_light_years integer
 );
 
 
@@ -227,6 +234,7 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 -- Data for Name: galaxy; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.galaxy VALUES (1, 'Milky Way', 25.0);
 
 
 --
@@ -239,46 +247,49 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 -- Data for Name: moon; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.moon VALUES (1, 'moon', 4);
 
 
 --
 -- Data for Name: planet; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.planet VALUES (4, 'earth', 3, true, 5, 0, 'Earth is a terrestrial planet. It is small and rocky.', false, false);
 
 
 --
 -- Data for Name: star; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.star VALUES (3, 'sun', 1, 0);
 
 
 --
 -- Name: galaxy_galaxy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 1, false);
+SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 1, true);
 
 
 --
 -- Name: moon_moon_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.moon_moon_id_seq', 1, false);
+SELECT pg_catalog.setval('public.moon_moon_id_seq', 1, true);
 
 
 --
 -- Name: planet_planet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.planet_planet_id_seq', 1, true);
+SELECT pg_catalog.setval('public.planet_planet_id_seq', 4, true);
 
 
 --
 -- Name: star_star_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.star_star_id_seq', 1, false);
+SELECT pg_catalog.setval('public.star_star_id_seq', 3, true);
 
 
 --
@@ -343,6 +354,14 @@ ALTER TABLE ONLY public.star
 
 ALTER TABLE ONLY public.star
     ADD CONSTRAINT star_pkey PRIMARY KEY (star_id);
+
+
+--
+-- Name: junction_table unique_id; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.junction_table
+    ADD CONSTRAINT unique_id UNIQUE (junction_table_id);
 
 
 --
